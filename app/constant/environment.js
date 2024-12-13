@@ -8,7 +8,8 @@ const env = {
   DB_USER: process.env.DB_USER,
   DB_PASSWORD: process.env.DB_PASSWORD,
   DB_HOST: process.env.DB_HOST,
-  RESET_ALL_BOOKINGS: process.env.RESET_ALL_BOOKINGS
+  RESET_ALL_BOOKINGS: process.env.RESET_ALL_BOOKINGS,
+  DB_PORT:process.env.DB_PORT
 };
 
 module.exports = { env };

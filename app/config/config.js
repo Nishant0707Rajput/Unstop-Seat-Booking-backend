@@ -8,6 +8,7 @@ module.exports = {
     'password': env.DB_PASSWORD,
     'database': env.DB_NAME,
     'host': env.DB_HOST,
+    'port':env.DB_PORT,
     'dialect': 'mysql',
     'max': 20, // maximum connection which postgresql or mysql can initiate
     'min': 0, // minimum connection which postgresql or mysql can initiate
