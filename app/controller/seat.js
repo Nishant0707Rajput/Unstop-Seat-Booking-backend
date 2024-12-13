@@ -1,41 +1,5 @@
 const { Op } = require('sequelize');
 const { Seat, Booking, sequelize } = require('../models');
-const { env } = require('../constant/environment')
-
-// Reset all bookings if environment variable is set
-if (env.RESET_ALL_BOOKINGS === '1') {
-    initializeSeats().catch((err) => console.error('Error initializing seats:', err.message));
-}
-
-async function initializeSeats() {
-    const transaction = await sequelize.transaction();
-    try {
-        await Seat.destroy({ where: {}, truncate: true, cascade: true, transaction });
-        await Booking.destroy({ where: {}, truncate: true, cascade: true, transaction });
-
-        const seats = [];
-        for (let row = 1; row <= 11; row++) {
-            for (let seat = 1; seat <= 7; seat++) {
-                seats.push({ row_number: row, seat_number: seat, status: 'available' });
-            }
-        }
-        for (let seat = 1; seat <= 3; seat++) {
-            seats.push({ row_number: 12, seat_number: seat, status: 'available' });
-        }
-
-        // Bulk insert new seat data
-        await Seat.bulkCreate(seats, { transaction });
-        await transaction.commit();
-
-        console.log('Seats initialized successfully!');
-    } catch (error) {
-        await transaction.rollback();
-        console.error('Error initializing seats:', error.message);
-        throw error;
-    }
-}
-
-
 
 // Fetch all seats, grouped by row
 exports.getAllSeats = async (req, res) => {

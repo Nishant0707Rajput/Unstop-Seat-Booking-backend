@@ -4,6 +4,7 @@ const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
 const { env } = require('../constant/environment');
 const node_env = env.NODE_ENV || 'development';
+const { initializeSeats } = require('../utils/helper');
 const config = require(path.join(__dirname, '/../config/config.js'))[node_env];
 const db = {};
 const sequelize = new Sequelize(config);
@@ -28,9 +29,12 @@ sequelize.authenticate()
     console.error('Unable to connect to the database:', error.message);
   });
 
-sequelize.sync({ force: false, alter: true, logging: false })
+sequelize.sync({ force: env.RESET_ALL_BOOKINGS==='1', alter: true, logging: false })
   .then(() => {
     console.log(`DB_NAME & tables created!`);
+    if(env.RESET_ALL_BOOKINGS==='1'){
+      initializeSeats(db['Seat']);  // reinitializing DB on server restart
+    }
   }).catch((error) => {
     console.log('catchError>>>>>>>>', error);
   });
